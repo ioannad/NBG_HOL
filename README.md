@@ -27,18 +27,17 @@ In these theories, the formalisation is presented in an almost linear manner (te
 Main branch
 -----------
 * `remove_notation`  -- Removes internal notation so it can be redefined.
-* `axioms0` -- The base of the theory: in-relation, class extensionality, universal class, set existence, pairing, and empty set.
+* `axioms_base` -- The base of the theory: in-relation, class extensionality, universal class, set existence, pairing, and empty set.
 * `auxiliary0`-- Some extra lemmas
 * `ntuples` -- Definitions and lemmas about n-tuples
-* `axioms1` -- The "Class Existence Axioms" B1-B7
+* `axioms_class_existence` -- The "Class Existence Axioms" B1-B7
 * `FOL_formula`, `FOL_substitution`, `class comprehension` enable the {x|phi} notation for classes, for first order formulas phi, by proving the Class Existence Theorem.
-* `axioms2` contains the axioms: union (sum set), powerset, subsets (together with the Class Existence Theorem makes the axiom schema of comprehension), replacement, and infinity. 
+* `axioms_to_infinity` contains the axioms: union (sum set), powerset, subsets (together with the Class Existence Theorem makes the axiom schema of comprehension), replacement, and infinity. 
 
 Development branch
 ------------------
 * `ordinals` starts with some relation properties, functions, and classes related to ordinal numbers. Transfinite induction is proved here in three forms.
-The last lemmas involve bijective maps leading to the next theory.
-* `equinumerosity`  
+The last lemmas involve bijective maps leading to the next theory `equinumerosity`  (TBU - to be uploaded)
 
 ### Note to contributors
 
