@@ -37,9 +37,9 @@ and B6: "\<exists>Z::Class. \<forall>u v w::Set. (\<langle>u, v, w\<rangle>\<in>
 and B7: "\<exists>Z::Class. \<forall>u v w::Set. (\<langle>u, v, w\<rangle>\<in>Z \<longleftrightarrow> \<langle>u, w, v\<rangle>\<in>X)"
       -- "permutation of the last two coordinates"
 
-(* Ioanna: page 231 *)
+(* page 231 *)
 
-(* Ioanna: The following are the uniqueness lemmas mentioned in the comments in the 
+(* The following are the uniqueness lemmas mentioned in the comments in the 
            beginning of page 231. *)
 
 lemma intersection_unique: "\<exists>! Z :: Class. \<forall> u :: Set. (u\<in>Z \<longleftrightarrow> (u\<in>X \<and> u\<in>Y))"
@@ -235,7 +235,7 @@ qed
 lemma Ex_4_11_c: "\<forall>X. \<exists>Z. \<forall>v. \<forall>i :: nat \<Rightarrow> Set. \<langle>\<dots>, i(n), v\<rangle> \<in> Z \<longleftrightarrow> \<langle>\<dots>, i(n)\<rangle> \<in> X"
 using B5 by blast
 
-(* Ioanna: page 232 *)
+(* page 232 *)
 
 lemma Ex_4_11_d: "\<forall>X. \<exists>Z. \<forall>i :: nat \<Rightarrow> Set. ( \<langle>\<dots>,i(n + k)\<rangle> \<in> Z \<longleftrightarrow> \<langle>\<dots>,i(n)\<rangle> \<in> X)"
 proof (induction k, simp_all, blast)
