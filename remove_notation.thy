@@ -34,9 +34,8 @@ no_notation  subset  ("op <") and
   power2 ("(_\<^sup>2)" [1000] 999) and 
   power ("(_\<^bsup>_\<^esup>)" [1000] 1000)
   
-(*Ioanna: do not remove natural number symbols, we need Isabelle's natural numbers for FOL:_Formulas. *)
-(*  Groups.one ("1") and
-  Groups.minus(infixl "-" 65) *) 
+(* do not remove natural number symbols, we need Isabelle's natural numbers for FOL:_Formulas. *)
+
 
 (* delete all syntax from Set *)
 no_syntax 
