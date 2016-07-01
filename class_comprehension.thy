@@ -88,6 +88,8 @@ lemma class_comprehension_uniqueness:
   shows "\<lbrakk>\<forall>x. x \<in> C \<longleftrightarrow> (f x); \<forall>x. x \<in> D \<longleftrightarrow> (f x)\<rbrakk> \<Longrightarrow> C = D"
 using extensionality by blast
 
+text{* Classes from non-definable meta-classes are empty. *}
+
 definition class_comprehension :: "(Set \<Rightarrow> bool) \<Rightarrow> Class" where
   "(class_comprehension f) == if (definable f) 
                               then (THE C::Class. \<forall> x::Set. x \<in> C \<longleftrightarrow> (f x))
@@ -234,9 +236,8 @@ proof -
       \<and> P(A))" 
     using ex_definable_lemma2 by auto
   also have "\<dots> \<longleftrightarrow> 
-    (FOL_True (FEx (n+4)
-                   (FAnd (FEx (n+3)
-                              (FAll (n+2) 
+    (FOL_True (FEx (n+4) (FAnd (FEx (n+3)
+                                 (FAll (n+2) 
                                     (FIff (FBelongs (FVar (n+2)) 
                                                     (FVar  (n+4))) 
                                           (FOr (FAll (n+1) 
@@ -324,74 +325,51 @@ proof
   qed
 qed
 
+
+text{* We will often need the FOL_Formula which describes that a set variable is 
+       the ordered pair of two other set varianles, so we separate it below: *}
+
+definition Pair\<phi> :: "nat \<Rightarrow> nat \<Rightarrow> nat \<Rightarrow> FOL_Formula"
+--"\<open>x\<^sub>l = \<langle>x\<^sub>m, x\<^sub>n\<rangle>\<close>"
+where "Pair\<phi> l m n = (FAll 99 
+                         (FIff (FBelongs (FVar 99) (FVar l))
+                               (FOr (FAll 999 
+                                      (FIff (FBelongs (FVar 999) (FVar 99)) 
+                                            (FEquals (FVar 999) (FVar m))))
+                                    (FAll 999 
+                                      (FIff (FBelongs (FVar 999) (FVar 99))   
+                                            (FOr (FEquals (FVar 999) (FVar m))
+                                                 (FEquals (FVar 999) (FVar n))))))))"
+
 lemma cartesian_definable [defining]:
-shows "definable (\<lambda> x. \<exists> u v. x = \<langle>u, v\<rangle>)"
+shows "definable (\<lambda> x. \<exists> u v. x = \<langle>u, v\<rangle>)" unfolding definable_def
 proof -
-  def "f" == "\<lambda> x. \<exists> u v. x = \<langle>u, v\<rangle>"
-  def "\<phi>" == "(FEx 10 (* u' *)
-             (FEx 20 (* v' *)
-             (FAll 30 (* u *)
-               (FIff (FBelongs (FVar 30) (FVar 0))
-                     (FOr
-                       (FAll 40 (FIff (FBelongs (FVar 40) (FVar 30)) (FEquals (FVar 40) (FVar 10))))
-                       (FAll 40 (FIff (FBelongs (FVar 40) (FVar 30)) 
-                                (FOr (FEquals (FVar 40) (FVar 10))
-                                     (FEquals (FVar 40) (FVar 20))))))))))"
-  {
-   fix i
-   have "FOL_True \<phi> i = (f (i 0))" by
-   (simp add: f_def ordered_pair_def Update_def
-     Rep_Set_inject FOL_MaxVar_Dom \<phi>_def ex_definable_lemma2)
-  }
-  then show ?thesis unfolding definable_def f_def by auto
+  let ?f = "\<lambda> x. \<exists> u v. x = \<langle>u, v\<rangle>"
+  let ?\<phi> = "(FEx 10 (FEx 20 (Pair\<phi> 0 10 20)))"
+  have "\<forall>i. (FOL_True ?\<phi> i = (?f (i 0)))" by (simp add: ordered_pair_def Update_def Rep_Set_inject 
+    FOL_MaxVar_Dom Pair\<phi>_def ex_definable_lemma2)
+  thus "\<exists>\<phi>. \<forall>i. FOL_True \<phi> i = (\<exists>u v. i 0 = \<langle>u, v\<rangle>) " ..
 qed
 
 lemma belongs_definable[defining]:
-shows "definable (\<lambda> x. \<exists> u v ::Set. x = \<langle>u, v\<rangle> \<and> u \<in> v)"
+shows "definable (\<lambda> x. \<exists> u v ::Set. x = \<langle>u, v\<rangle> \<and> u \<in> v)" unfolding definable_def
 proof -
- def "f" == "\<lambda> x. \<exists> u v :: Set. x = \<langle>u, v\<rangle> \<and> u \<in> v"
- def "\<phi>" == "(FEx 10 (* u' *) 
-             (FEx 20 (* v' *) (FAnd
-             (FAll 30 (* u *)
-               (FIff (FBelongs (FVar 30) (FVar 0))
-                     (FOr
-                       (FAll 40 (FIff (FBelongs (FVar 40) (FVar 30)) (FEquals (FVar 40) (FVar 10))))
-                       (FAll 40 (FIff (FBelongs (FVar 40) (FVar 30)) 
-                                (FOr (FEquals (FVar 40) (FVar 10))
-                                     (FEquals (FVar 40) (FVar 20))))))))
-              (FBelongs (FVar 10) (FVar 20)))))"
-     --"In other words, 
-        \<open>\<exists>x\<^sub>1\<^sub>0. \<exists>x\<^sub>2\<^sub>0. ((\<forall>x\<^sub>3\<^sub>0. (x\<^sub>3\<^sub>0 \<in> x\<^sub>0 \<longleftrightarrow> ((\<forall>x\<^sub>4\<^sub>0. (x\<^sub>4\<^sub>0 \<in> x\<^sub>3\<^sub>0 \<longleftrightarrow> (x\<^sub>4\<^sub>0 = x\<^sub>1\<^sub>0))) \<or>
-                                           (\<forall>x\<^sub>4\<^sub>0. (x\<^sub>4\<^sub>0 \<in> x\<^sub>3\<^sub>0 \<longleftrightarrow> ((x\<^sub>4\<^sub>0 = x\<^sub>1\<^sub>0) \<or> (x\<^sub>4\<^sub>0 = x\<^sub>2\<^sub>0)))))))
-                      \<and> (x\<^sub>1\<^sub>0 \<in> x\<^sub>2\<^sub>0))\<close>.  "
-   {
-   fix i
-   have "FOL_True \<phi> i = (f (i 0))" by
-   (simp add: f_def ordered_pair_def Update_def
-     Rep_Set_inject FOL_MaxVar_Dom \<phi>_def ex_definable_lemma2)
-  }
-  then show ?thesis unfolding definable_def f_def by auto
+ let ?f = "\<lambda> x. \<exists> u v :: Set. x = \<langle>u, v\<rangle> \<and> u \<in> v"
+ let ?\<phi> = "(FEx 10 (FEx 20 (FAnd (Pair\<phi> 0 10 20)
+                                 (FBelongs (FVar 10) (FVar 20)))))"
+ have "\<forall>i. FOL_True ?\<phi> i = (?f (i 0))" by (simp add: ordered_pair_def Update_def Rep_Set_inject 
+   FOL_MaxVar_Dom Pair\<phi>_def ex_definable_lemma2)
+ thus "\<exists>\<phi>. \<forall>i. FOL_True \<phi> i = ?f(i(0))" ..
 qed
 
 lemma equals_definable[defining]:
-shows "definable (\<lambda> x. \<exists> u. x = \<langle>u,u\<rangle>)"
+shows "definable (\<lambda> x. \<exists> u. x = \<langle>u,u\<rangle>)" unfolding definable_def
 proof -
-  def "f" == "\<lambda> x. \<exists> u. x = \<langle>u, u\<rangle>"
-  def "\<phi>" == "(FEx 10 (* u' *)
-             (FAll 30 (* u *)
-               (FIff (FBelongs (FVar 30) (FVar 0))
-                     (FOr
-                       (FAll 40 (FIff (FBelongs (FVar 40) (FVar 30)) (FEquals (FVar 40) (FVar 10))))
-                       (FAll 40 (FIff (FBelongs (FVar 40) (FVar 30)) 
-                                (FOr (FEquals (FVar 40) (FVar 10))
-                                     (FEquals (FVar 40) (FVar 10)))))))))"
-  {
-   fix i
-   have "FOL_True \<phi> i = (f (i 0))" by
-   (simp add: f_def ordered_pair_def Update_def
-     Rep_Set_inject FOL_MaxVar_Dom \<phi>_def ex_definable_lemma2)
-  }
-  then show ?thesis unfolding definable_def f_def by auto
+  let ?f = "\<lambda> x. \<exists> u. x = \<langle>u, u\<rangle>"
+  let ?\<phi> = "(FEx 10 (Pair\<phi> 0 10 10))"
+  have "\<forall>i. FOL_True ?\<phi> i = (?f (i 0))" by (simp add: ordered_pair_def Update_def
+     Rep_Set_inject FOL_MaxVar_Dom Pair\<phi>_def ex_definable_lemma2)
+  thus "\<exists>\<phi>. \<forall>i. FOL_True \<phi> i = (?f(i(0)))" ..
 qed
 
 (* class comprehension lemmata *)
