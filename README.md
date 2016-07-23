@@ -2,13 +2,13 @@
 
 **We encourage you to work on this project with us!** In this case, please read the note to contributors below.
 
-The initial files are heavily based on common work of: Marek Broll, Thekla Hamm, Uli Matzner, Lukas Meier, Robert Paßmann, Julian Schröteler, Jakob Speer, Thorben Tröbst, Benjamin Valdez, and Luisa Vogel, during the [winter semester 2015/16](http://www.math.uni-bonn.de/ag/logik/teaching/2015WS/praktikum_mathematische_logik.shtml). 
+The initial files are heavily based on common work of: Marek Broll, Thekla Hamm, Uli Matzner, Lukas Meier, Robert PaÃŸmann, Julian SchrÃ¶teler, Jakob Speer, Thorben TrÃ¶bst, Benjamin Valdez, and Luisa Vogel, during the [winter semester 2015/16](http://www.math.uni-bonn.de/ag/logik/teaching/2015WS/praktikum_mathematische_logik.shtml). *Not all initial files have been uploaded.* They are:  remove_notation.thy, axioms_base.thy, ntuples.thy, auxiliary0.thy, FOL_formula.thy, FOL_substitution.thy, class_comprehension.thy, axioms_class_existence.thy, axioms_to_infinity.thy, auxiliary1.thy, ordinals.thy, equinumerosity.thy, finite_denumerable.thy, ordinal_arithmetic.thy, AC_AR.thy (might be uploaded with other name(s)).
 
 This project is in cooperation with the [Mathematical Logic Group Bonn](www.math.uni-bonn.de/ag/logik).
 
 ### NBG set theory
 
-Von Neumann-Bernays-Gödel (NBG) set theory is a finitely axiomatisable first order logic (FOL) set theory, which can talk about classes and sets (the elements of the classes). It is a conservative extension of Zermelo-Fraenkel (ZF) set theory, which means that they prove the same theorems about sets. The comprehension axiom schema of ZF is a single axiom of NBG, which is made possible by the 7 "Class Existence Axioms" that give rise to FOL definable classes. To ensure we only have FOL- and not HOL- definable classes, the theories FOL_formula, FOL_substitution, and class_comprehension are developed.
+Von Neumann-Bernays-GÃ¶del (NBG) set theory is a finitely axiomatisable first order logic (FOL) set theory, which can talk about classes and sets (the elements of the classes). It is a conservative extension of Zermelo-Fraenkel (ZF) set theory, which means that they prove the same theorems about sets. The comprehension axiom schema of ZF is a single axiom of NBG, which is made possible by the 7 "Class Existence Axioms" that give rise to FOL definable classes. To ensure we only have FOL- and not HOL- definable classes, the theories FOL_formula, FOL_substitution, and class_comprehension are developed.
 
 ### Isabelle/HOL
 
